@@ -246,7 +246,7 @@ final class Playbook {
 				'etapa' => '01',
 				'title' => 'Definir a arquitetura',
 				'where' => 'Este plugin',
-				'text'  => 'Escolha o modelo abaixo ou descreva os níveis no JSON. Confira a URL de exemplo e a conta de páginas antes de criar campo ou planilha. Dois níveis e três níveis são projetos diferentes; o prefixo phf é só da Prime House.',
+				'text'  => 'Escolha o modelo na aba Começar ou descreva os níveis no JSON. Confira a URL de exemplo e a conta de páginas antes de criar campo ou planilha. Dois níveis e três níveis são projetos diferentes. O prefixo é deste cliente e vira o nome dos shortcodes.',
 			),
 			array(
 				'id'    => 'estrutura',
