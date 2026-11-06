@@ -48,6 +48,7 @@ final class Guide {
 		$done     = is_array( $done ) ? $done : array();
 
 		echo '<div class="lrps-grid">';
+		$this->handoff_card( $config, $prefix );
 		$this->coverage_card( $coverage, $prefix );
 		$this->preset_card( $config );
 		$this->acf_card( $config );
@@ -68,6 +69,49 @@ final class Guide {
 			$done[ $id ] = ! empty( $posted[ $id ] );
 		}
 		update_option( self::CHECKLIST_OPTION, $done, false );
+	}
+
+	/**
+	 * What the person still does after the form creates the structure.
+	 *
+	 * @param array<string,mixed> $config Project.
+	 * @param string              $prefix Prefix.
+	 */
+	private function handoff_card( array $config, $prefix ) {
+		$client = isset( $config['company']['name'] ) ? trim( (string) $config['company']['name'] ) : '';
+		$trade  = isset( $config['trade_label'] ) ? trim( (string) $config['trade_label'] ) : '';
+		$who    = '' !== $client ? $client : __( 'este cliente', 'local-rank-programmatic-seo' );
+		$url    = add_query_arg(
+			array(
+				'page' => 'lrps',
+				'tab'  => 'comecar',
+			),
+			admin_url( 'admin.php' )
+		);
+
+		echo '<section class="lrps-card">';
+		echo '<h2>' . esc_html__( 'O que você faz agora', 'local-rank-programmatic-seo' ) . '</h2>';
+		echo '<p>' . esc_html( sprintf(
+			/* translators: 1: client name, 2: prefix */
+			__( 'A estrutura de %1$s já está criada. As rotas, os shortcodes [%2$s_…] e o schema saem deste plugin. Falta só o que continua em cada ferramenta:', 'local-rank-programmatic-seo' ),
+			$who,
+			$prefix
+		) ) . '</p>';
+		if ( '' !== $trade ) {
+			echo '<p class="description">' . esc_html( sprintf(
+				/* translators: %s: trade label */
+				__( 'Ofício usado no schema: %s.', 'local-rank-programmatic-seo' ),
+				$trade
+			) ) . '</p>';
+		}
+		echo '<ol class="lrps-now">';
+		echo '<li><strong>' . esc_html__( 'ACF Pro', 'local-rank-programmatic-seo' ) . '</strong> ' . esc_html__( 'Crie o grupo com os field names da tabela abaixo. O plugin não cria o grupo. O select de cidade já vem do catálogo.', 'local-rank-programmatic-seo' ) . '</li>';
+		echo '<li><strong>' . esc_html__( 'Elementor', 'local-rank-programmatic-seo' ) . '</strong> ' . esc_html__( 'Monte o template e cole os shortcodes da aba Referência. O schema entra uma vez, no fim do template.', 'local-rank-programmatic-seo' ) . '</li>';
+		echo '<li><strong>' . esc_html__( 'WP All Import', 'local-rank-programmatic-seo' ) . '</strong> ' . esc_html__( 'Use a planilha abaixo. A coluna unique_key é o identificador: a mesma chave atualiza a página, uma chave nova cria outra.', 'local-rank-programmatic-seo' ) . '</li>';
+		echo '<li><strong>' . esc_html__( 'Yoast', 'local-rank-programmatic-seo' ) . '</strong> ' . esc_html__( 'Cole o título padrão no fim desta tela. O Yoast continua dono do título e da meta description.', 'local-rank-programmatic-seo' ) . '</li>';
+		echo '</ol>';
+		echo '<p><a class="button" href="' . esc_url( $url ) . '">' . esc_html__( 'Alterar as respostas', 'local-rank-programmatic-seo' ) . '</a></p>';
+		echo '</section>';
 	}
 
 	/**
