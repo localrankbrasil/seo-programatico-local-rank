@@ -49,10 +49,10 @@ final class Setup {
 		echo '<section class="lrps-card">';
 		echo '<h2><span class="lrps-step-no">1</span>' . esc_html__( 'O cliente', 'local-rank-programmatic-seo' ) . '</h2>';
 		echo '<p>' . esc_html__( 'Estas respostas viram o nome dos shortcodes e o texto do schema. O plugin não publica página nenhuma sozinho.', 'local-rank-programmatic-seo' ) . '</p>';
-		self::field( 'client_name', __( 'Nome do cliente', 'local-rank-programmatic-seo' ), $client, 'Prime House Flooring' );
-		self::field( 'trade_label', __( 'O que ele faz', 'local-rank-programmatic-seo' ), $trade, 'Flooring Contractor' );
-		self::field( 'prefix', __( 'Prefixo curto', 'local-rank-programmatic-seo' ), $prefix, 'phf', 'lrps-prefix' );
-		echo '<p class="description">' . esc_html__( 'Duas a doze letras, sem espaço. phf vira [phf_city_state]. Use um prefixo novo para cada cliente.', 'local-rank-programmatic-seo' ) . '</p>';
+		self::field( 'client_name', __( 'Nome do cliente', 'local-rank-programmatic-seo' ), $client, 'Nome do cliente' );
+		self::field( 'trade_label', __( 'O que ele faz', 'local-rank-programmatic-seo' ), $trade, 'serviço local' );
+		self::field( 'prefix', __( 'Prefixo curto', 'local-rank-programmatic-seo' ), $prefix, 'lr', 'lrps-prefix' );
+		echo '<p class="description">' . esc_html__( 'Duas a doze letras, sem espaço. lr vira [lr_city_state]. Cada cliente recebe um prefixo novo.', 'local-rank-programmatic-seo' ) . '</p>';
 		echo '</section>';
 
 		echo '<section class="lrps-card">';
@@ -78,13 +78,13 @@ final class Setup {
 		echo '<section class="lrps-card">';
 		echo '<h2><span class="lrps-step-no">3</span>' . esc_html__( 'Onde atende', 'local-rank-programmatic-seo' ) . '</h2>';
 		echo '<p>' . esc_html__( 'Uma cidade por linha: nome e estado. O slug nasce do nome. Só entram cidades que o cliente atende de verdade.', 'local-rank-programmatic-seo' ) . '</p>';
-		echo '<textarea name="places" rows="8" class="large-text" placeholder="Greenwich, CT&#10;Stamford, CT">' . esc_textarea( $places ) . '</textarea>';
+		echo '<textarea name="places" rows="8" class="large-text" placeholder="Austin, TX&#10;Dallas, TX">' . esc_textarea( $places ) . '</textarea>';
 		echo '</section>';
 
 		echo '<section class="lrps-card">';
 		echo '<h2><span class="lrps-step-no">4</span>' . esc_html__( 'O que oferece', 'local-rank-programmatic-seo' ) . '</h2>';
 		echo '<p>' . esc_html__( 'Um serviço por linha. Cada serviço combina com cada cidade e vira uma página.', 'local-rank-programmatic-seo' ) . '</p>';
-		echo '<textarea name="offers" rows="8" class="large-text" placeholder="Tile Installation&#10;Hardwood Flooring">' . esc_textarea( $offers ) . '</textarea>';
+		echo '<textarea name="offers" rows="8" class="large-text" placeholder="Manutenção&#10;Instalação">' . esc_textarea( $offers ) . '</textarea>';
 		echo '</section>';
 
 		$button = $ready
@@ -105,17 +105,17 @@ final class Setup {
 			'city_service'       => array(
 				'label' => $catalog['city_service']['label'],
 				'text'  => 'A cidade é a primeira página. O serviço mora dentro dela.',
-				'url'   => '/greenwich/  e  /greenwich/tile-installation/',
+				'url'   => '/austin/  e  /austin/manutencao/',
 			),
 			'static_service'     => array(
 				'label' => $catalog['static_service']['label'],
 				'text'  => 'Já existe uma página, como Services. O programático nasce debaixo dela.',
-				'url'   => '/services/tile-installation/  e  /services/tile-installation/greenwich/',
+				'url'   => '/services/manutencao/  e  /services/manutencao/austin/',
 			),
 			'state_city_service' => array(
 				'label' => $catalog['state_city_service']['label'],
 				'text'  => 'Três níveis: o estado, a cidade dentro dele e o serviço na cidade.',
-				'url'   => '/ct/  /ct/greenwich/  /ct/greenwich/tile-installation/',
+				'url'   => '/tx/  /tx/austin/  /tx/austin/manutencao/',
 			),
 		);
 	}
