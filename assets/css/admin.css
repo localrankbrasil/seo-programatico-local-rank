@@ -1,0 +1,368 @@
+/*
+ * Local Rank brand, 2027.
+ * Deep blue #0e1d38, bright green #a3d115, forest green #0e3639,
+ * black #111111, light grey #efefef, white #ffffff.
+ * Sora for titles. Manrope for text. Both under the SIL Open Font License.
+ */
+
+@font-face {
+	font-family: "Sora";
+	src: url("../fonts/Sora-VariableFont_wght.ttf") format("truetype");
+	font-weight: 100 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Manrope";
+	src: url("../fonts/Manrope-VariableFont_wght.ttf") format("truetype");
+	font-weight: 200 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+.lrps-wrap {
+	max-width: 1120px;
+	color: #111111;
+	font-family: "Manrope", sans-serif;
+	font-size: 15px;
+	line-height: 1.55;
+}
+
+.lrps-hero {
+	background: #0e1d38;
+	border-radius: 12px;
+	margin: 12px 0 20px;
+	padding: 28px 32px 26px;
+}
+
+.lrps-logo {
+	display: block;
+	height: 42px;
+	width: auto;
+	margin: 0 0 22px;
+}
+
+.lrps-hero h1 {
+	margin: 0 0 8px;
+	padding: 0;
+	color: #ffffff;
+	font-family: "Sora", sans-serif;
+	font-size: 34px;
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+}
+
+.lrps-kicker {
+	max-width: 68ch;
+	margin: 0;
+	color: rgba(255, 255, 255, 0.82);
+	font-size: 15px;
+}
+
+.lrps-wrap .nav-tab-wrapper {
+	margin: 0 0 20px;
+	border-bottom: 2px solid #0e1d38;
+	padding: 0;
+}
+
+.lrps-wrap .nav-tab {
+	margin: 0 4px -2px 0;
+	padding: 10px 16px;
+	border: 0;
+	background: transparent;
+	color: #0e3639;
+	font-family: "Sora", sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.lrps-wrap .nav-tab:hover,
+.lrps-wrap .nav-tab:focus {
+	background: #efefef;
+	color: #0e1d38;
+}
+
+.lrps-wrap .nav-tab-active,
+.lrps-wrap .nav-tab-active:hover {
+	background: #ffffff;
+	border-bottom: 3px solid #a3d115;
+	color: #0e1d38;
+}
+
+.lrps-grid {
+	display: grid;
+	gap: 16px;
+}
+
+.lrps-card {
+	background: #ffffff;
+	border: 0;
+	border-radius: 12px;
+	border-top: 4px solid #a3d115;
+	box-shadow: 0 1px 2px rgba(14, 29, 56, 0.06);
+	margin: 0;
+	padding: 20px 22px 16px;
+}
+
+.lrps-card h2,
+.lrps-preset h3 {
+	margin: 0 0 8px;
+	color: #0e1d38;
+	font-family: "Sora", sans-serif;
+	font-size: 20px;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+}
+
+.lrps-preset h3 {
+	font-size: 16px;
+}
+
+.lrps-card > p,
+.lrps-card .description,
+.lrps-preset p {
+	color: #111111;
+}
+
+.lrps-card .description {
+	color: #0e3639;
+}
+
+.lrps-card code {
+	background: #efefef;
+	border-radius: 4px;
+	color: #0e1d38;
+	padding: 1px 5px;
+}
+
+.lrps-card table.widefat {
+	border: 0;
+	box-shadow: none;
+	margin-top: 12px;
+}
+
+.lrps-card table.widefat thead th {
+	color: #0e1d38;
+	font-family: "Sora", sans-serif;
+	font-weight: 600;
+}
+
+.lrps-card table.widefat thead td,
+.lrps-card table.widefat thead th {
+	border-bottom: 2px solid #a3d115;
+}
+
+.lrps-stack,
+.lrps-fields label {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin: 0 0 12px;
+	color: #0e1d38;
+	font-family: "Sora", sans-serif;
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.lrps-stack input,
+.lrps-stack select,
+.lrps-fields input,
+.lrps-card textarea,
+.lrps-wrap input[type="text"],
+.lrps-wrap input[type="url"],
+.lrps-wrap input[type="number"],
+.lrps-wrap select,
+.lrps-wrap textarea {
+	border-color: #d7dbe2;
+	border-radius: 8px;
+	color: #111111;
+	font-family: "Manrope", sans-serif;
+	font-weight: 400;
+	max-width: 100%;
+}
+
+.lrps-wrap input:focus,
+.lrps-wrap select:focus,
+.lrps-wrap textarea:focus {
+	border-color: #0e1d38;
+	box-shadow: 0 0 0 1px #0e1d38;
+}
+
+.lrps-wrap input[type="checkbox"] {
+	accent-color: #0e3639;
+}
+
+.lrps-fields {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 8px 16px;
+}
+
+.lrps-checkline {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	margin: 0 0 8px;
+	font-family: "Manrope", sans-serif;
+	font-weight: 500;
+}
+
+.lrps-checkline input {
+	margin-top: 3px;
+}
+
+.lrps-split {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	margin-top: 8px;
+}
+
+.lrps-split form {
+	background: #ffffff;
+	border: 0;
+	border-radius: 12px;
+	border-top: 4px solid #0e1d38;
+	padding: 16px;
+}
+
+.lrps-checks td {
+	vertical-align: top;
+}
+
+.lrps-check__status {
+	width: 96px;
+	font-family: "Sora", sans-serif;
+	font-weight: 600;
+}
+
+.lrps-check.is-ok .lrps-check__status {
+	color: #0e3639;
+}
+
+.lrps-check.is-warn .lrps-check__status {
+	color: #8a5a00;
+}
+
+.lrps-check.is-fail .lrps-check__status {
+	color: #8a1f1f;
+}
+
+.lrps-inline {
+	margin-top: 16px;
+}
+
+.lrps-presets {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.lrps-preset {
+	margin: 0;
+	padding: 16px;
+	border: 0;
+	border-radius: 10px;
+	background: #efefef;
+}
+
+.lrps-preset p {
+	margin: 0 0 12px;
+}
+
+.lrps-preset__state {
+	color: #0e3639;
+	font-family: "Sora", sans-serif;
+	font-weight: 600;
+}
+
+.lrps-steps {
+	margin: 0 0 16px;
+	padding-left: 22px;
+}
+
+.lrps-steps li {
+	margin: 0 0 14px;
+}
+
+.lrps-steps li::marker {
+	color: #0e1d38;
+	font-family: "Sora", sans-serif;
+	font-weight: 700;
+}
+
+.lrps-steps p {
+	margin: 4px 0 0 4px;
+}
+
+.lrps-steps label {
+	font-family: "Manrope", sans-serif;
+}
+
+.lrps-where {
+	display: inline-block;
+	margin-left: 6px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	background: rgba(163, 209, 21, 0.28);
+	color: #0e1d38;
+	font-family: "Sora", sans-serif;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	vertical-align: 1px;
+}
+
+.lrps-wrap .button,
+.lrps-wrap .button-secondary {
+	border-color: #0e1d38;
+	border-radius: 8px;
+	background: #ffffff;
+	color: #0e1d38;
+	font-family: "Sora", sans-serif;
+	font-weight: 600;
+}
+
+.lrps-wrap .button:hover,
+.lrps-wrap .button-secondary:hover {
+	border-color: #0e1d38;
+	background: #efefef;
+	color: #0e1d38;
+}
+
+.lrps-wrap .button-primary {
+	border-color: #8fb80f;
+	background: #a3d115;
+	color: #0e1d38;
+	text-shadow: none;
+	box-shadow: none;
+}
+
+.lrps-wrap .button-primary:hover,
+.lrps-wrap .button-primary:focus {
+	border-color: #0e1d38;
+	background: #b6e534;
+	color: #0e1d38;
+}
+
+@media (max-width: 782px) {
+	.lrps-hero {
+		padding: 22px 18px 20px;
+	}
+
+	.lrps-hero h1 {
+		font-size: 28px;
+	}
+
+	.lrps-logo {
+		height: 34px;
+	}
+
+	.lrps-split,
+	.lrps-presets {
+		grid-template-columns: 1fr;
+	}
+}
