@@ -1,0 +1,17 @@
+{
+  "name": "localrank/programmatic-seo",
+  "description": "WordPress plugin for Local Rank programmatic SEO stage 3.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "LocalRank\\ProgrammaticSeo\\": "includes/"
+    }
+  }
+}
