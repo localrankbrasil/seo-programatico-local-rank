@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Local Rank — Programático
  * Description: Roteiro e lógica de SEO programático: arquitetura, URLs, shortcodes, Dynamic Tags e schema. Não substitui ACF, Elementor, WP All Import nem Yoast.
- * Version: 1.3.1
+ * Version: 1.3.2
  * Requires at least: 6.2
  * Requires PHP: 7.4
  * Author: Local Rank Brasil
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LRPS_VERSION', '1.3.1' );
+define( 'LRPS_VERSION', '1.3.2' );
 define( 'LRPS_FILE', __FILE__ );
 define( 'LRPS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LRPS_URL', plugin_dir_url( __FILE__ ) );

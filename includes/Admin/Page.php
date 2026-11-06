@@ -44,6 +44,7 @@ final class Page {
 	 */
 	public function register() {
 		add_action( 'admin_menu', array( $this, 'menu' ) );
+		add_action( 'admin_head', array( $this, 'menu_style' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
 		add_action( 'admin_init', array( $this, 'handle_post' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( LRPS_FILE ), array( $this, 'links' ) );
@@ -59,9 +60,40 @@ final class Page {
 			'manage_options',
 			'lrps',
 			array( $this, 'render' ),
-			LRPS_URL . 'assets/brand/local-rank-mark.svg',
+			$this->menu_icon(),
 			58
 		);
+	}
+
+	/**
+	 * Square brand mark for the admin menu.
+	 *
+	 * A file URL collapses in the 20px menu slot. The data URI is in the HTML.
+	 *
+	 * @return string
+	 */
+	private function menu_icon() {
+		$path = LRPS_PATH . 'assets/brand/menu-mark.svg';
+		$svg  = is_readable( $path ) ? file_get_contents( $path ) : '';
+		if ( ! is_string( $svg ) || false === strpos( $svg, '<svg' ) ) {
+			return 'dashicons-chart-bar';
+		}
+		$svg = preg_replace( '/<\?xml[^>]*\?>/', '', $svg );
+		return 'data:image/svg+xml;base64,' . base64_encode( trim( (string) $svg ) );
+	}
+
+	/**
+	 * Forces the menu mark to a visible 20px tile on every admin screen.
+	 */
+	public function menu_style() {
+		$icon = $this->menu_icon();
+		if ( 0 !== strpos( $icon, 'data:image/svg+xml;base64,' ) ) {
+			return;
+		}
+		echo '<style id="lrps-menu-icon">';
+		echo '#toplevel_page_lrps .wp-menu-image{background:transparent url("' . esc_attr( $icon ) . '") center/20px 20px no-repeat!important}';
+		echo '#toplevel_page_lrps .wp-menu-image img,#toplevel_page_lrps .wp-menu-image:before{opacity:0!important}';
+		echo '</style>';
 	}
 
 	/**
@@ -662,7 +694,13 @@ final class Page {
 			return;
 		}
 		$svg = preg_replace( '/<\?xml[^>]*\?>/', '', $svg );
-		$svg = preg_replace( '/<svg\b/', '<svg class="lrps-logo" role="img" aria-label="Local Rank"', (string) $svg, 1 );
+		$svg = preg_replace( '/<style\b[^>]*>.*?<\/style>/s', '', (string) $svg );
+		$svg = str_replace(
+			array( 'class="cls-1"', 'class="cls-2"' ),
+			array( 'fill="#ffffff"', 'fill="#a3d115"' ),
+			(string) $svg
+		);
+		$svg = preg_replace( '/<svg\b/', '<svg class="lrps-logo" role="img" aria-label="Local Rank" width="220" height="47"', (string) $svg, 1 );
 		echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- local brand file, not user input.
 	}
 

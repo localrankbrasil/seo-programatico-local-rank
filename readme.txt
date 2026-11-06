@@ -4,7 +4,7 @@ Tags: seo, local seo, elementor, schema
 Requires at least: 6.2
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,9 @@ Sim. O prefixo só nomeia os shortcodes daquele site. Troque também níveis, ca
 A rota reconhece o catálogo, mas só publica a página se existir exatamente um registro daquele nível, cidade e serviço. Combinação duplicada também vira 404.
 
 == Changelog ==
+
+= 1.3.2 =
+* A marca verde da Local Rank aparece no item Programático do menu do admin.
 
 = 1.3.1 =
 * Remove o prefixo e o catálogo de um cliente antigo. Cada site informa o próprio prefixo no formulário.
