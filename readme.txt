@@ -1,10 +1,10 @@
-=== Local Rank — SEO Programático ===
+=== Local Rank — Programático ===
 Contributors: localrankbrasil
 Tags: seo, local seo, elementor, schema
 Requires at least: 6.2
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.2.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,7 +30,7 @@ Os campos continuam no ACF Pro. O layout continua no Elementor. Prefixo, catálo
 
 1. Envie a pasta para `/wp-content/plugins/local-rank-programmatic-seo`.
 2. Ative o plugin.
-3. Abra SEO programático, comece pelo Roteiro e importe o JSON do cliente ou preencha o projeto na tela.
+3. Abra Programático. A aba Começar pede o cliente, o formato da URL, as cidades e os serviços. A aba Próximos passos mostra o que falta no ACF, no Elementor, no WP All Import e no Yoast.
 4. Desative snippets antigos que registrem as mesmas rotas.
 5. Use a aba Referência na hora de ligar os templates e a aba Diagnóstico antes da importação.
 
@@ -49,6 +49,11 @@ Sim. Troque prefixo, nomes de campo, níveis, catálogos, rótulo do ofício e I
 A rota reconhece o catálogo, mas só publica a página se existir exatamente um registro daquele nível, cidade e serviço. Combinação duplicada também vira 404.
 
 == Changelog ==
+
+= 1.3.0 =
+* A primeira tela é um formulário: cliente, formato da URL, cidades e serviços. O plugin monta a estrutura e a aba Próximos passos lista o que continua no ACF, no Elementor, no WP All Import e no Yoast.
+* O menu passa a se chamar Programático.
+* O logo branco e verde volta a aparecer no topo da tela.
 
 = 1.2.2 =
 * Inclui o guia de uso em GUIA.md, com a descrição do plugin e o passo a passo das quatro abas.

@@ -24,6 +24,21 @@
 		});
 	}
 
+	var setup = document.getElementById('lrps-setup');
+	var parentBox = document.getElementById('lrps-parent');
+	if (setup && parentBox) {
+		var syncParent = function () {
+			var selected = setup.querySelector('input[name="model"]:checked');
+			if (selected && selected.value === 'static_service') {
+				parentBox.removeAttribute('hidden');
+			} else {
+				parentBox.setAttribute('hidden', 'hidden');
+			}
+		};
+		setup.addEventListener('change', syncParent);
+		syncParent();
+	}
+
 	var confirms = document.querySelectorAll('[data-confirm]');
 	Array.prototype.forEach.call(confirms, function (form) {
 		form.addEventListener('submit', function (event) {
