@@ -270,7 +270,7 @@ final class Wizard {
 				$rows[] = array( Slug::normalize( $name ), $name, trim( (string) $cols[1] ) );
 				continue;
 			}
-			$errors[] = 'Linha ' . ( $index + 1 ) . ' das cidades precisa de nome e estado. Exemplo: Greenwich, CT.';
+			$errors[] = 'Linha ' . ( $index + 1 ) . ' das cidades precisa de nome e estado. Exemplo: Austin, TX.';
 		}
 
 		$csv = '';
