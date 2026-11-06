@@ -2,7 +2,7 @@
 
 Plugin de WordPress para o time montar SEO programático sem escrever PHP por cliente. Ele guarda a arquitetura, publica as URLs a partir do catálogo e entrega shortcodes, Dynamic Tags e schema. O layout continua no Elementor. Os campos continuam no ACF Pro. A planilha continua no WP All Import. O título continua no Yoast.
 
-O prefixo `phf` e o arquivo `examples/prime-house-flooring.json` são o exemplo da Prime House Flooring. Cada cliente novo recebe o próprio prefixo, os próprios níveis e o próprio catálogo.
+Cada cliente recebe o próprio prefixo, os próprios níveis e o próprio catálogo. O prefixo só existe para nomear os shortcodes daquele site, por exemplo `lr` vira `[lr_city_state]`.
 
 ## O que o plugin resolve
 
@@ -49,7 +49,7 @@ Na aba **Começar**, escolha o formato da URL. Ele define os níveis e o breadcr
 
 | Modelo | Quando usar | URLs |
 | --- | --- | --- |
-| Cidade e serviço | A cidade é a primeira página e o serviço mora dentro dela. É o caso da Prime House. | `/{cidade}/` e `/{cidade}/{servico}/` |
+| Cidade e serviço | A cidade é a primeira página e o serviço mora dentro dela. | `/{cidade}/` e `/{cidade}/{servico}/` |
 | Filha de uma página estática | Existe uma página comum, como Services, e o programático nasce debaixo dela. | `/services/{servico}/` e `/services/{servico}/{cidade}/` |
 | Estado, cidade e serviço | São três níveis públicos. | `/{estado}/`, `/{estado}/{cidade}/` e `/{estado}/{cidade}/{servico}/` |
 
@@ -63,9 +63,9 @@ Sem `trail`, o breadcrumb antigo continua valendo: Home, a página de áreas e a
 
 Na aba **Projeto**, defina:
 
-- **Prefixo.** Vira o nome dos shortcodes. `lrps` gera `[lrps_city_state]`. `phf` gera `[phf_city_state]`. Use `phf` só na Prime House.
+- **Prefixo.** Vira o nome dos shortcodes deste cliente. `lr` gera `[lr_city_state]`. Não reaproveite o prefixo de outro site.
 - **CPT** e **taxonomia de nível.** O padrão é `location_page` e `seo_level`. Se o site já tem esses nomes, mantenha.
-- **Rótulo do ofício.** Exemplo: `Flooring Contractor`. Entra no schema e no título da página de cidade.
+- **Rótulo do ofício.** Exemplo: `serviço local`. Entra no schema e no título da página de cidade.
 
 Salve o projeto. As rotas são regeneradas nesse carregamento.
 
@@ -94,14 +94,14 @@ Regras que evitam quebra:
 - O mapa entra pela Dynamic Tag `prefixo-map-embed-url` ou pelo shortcode `[prefixo_map_embed_url]`. Só vale URL `https` de `google.com/maps/embed` ou `www.google.com/maps/embed`.
 - O schema entra uma vez, no fim do template, pelo shortcode do nível. Não coloque o JSON-LD no `wp_head`.
 - A condição de exibição do Theme Builder continua escolhendo o template. A opção de priorizar template só reordena um candidato que o Elementor já tenha listado.
-- `[section_label]` imprime a classe no próprio título. Na Prime House a classe é `ph-section-label`, porque o CSS do design system já estiliza essa classe.
+- `[section_label]` imprime a classe no próprio título. Se o tema já estiliza uma classe, informe essa classe no projeto.
 
 ### 6. Planilha e importação
 
 Na aba **Próximos passos**, copie o CSV de exemplo. A coluna `unique_key` é o identificador único do WP All Import.
 
-- Página de cidade: `{city_slug}__city`, por exemplo `greenwich__city`.
-- Página de serviço: `{city_slug}__service__{service_slug}`, por exemplo `greenwich__service__tile-installation`.
+- Página de cidade: `{city_slug}__city`, por exemplo `austin__city`.
+- Página de serviço: `{city_slug}__service__{service_slug}`, por exemplo `austin__service__manutencao`.
 
 A mesma chave na reimportação atualiza o post. Uma chave nova cria outro post e deixa a URL antiga no ar. A linha de exemplo nasce como `draft` de propósito.
 
@@ -120,15 +120,6 @@ O Yoast continua dono do título. O padrão da operação é:
 O canonical da location page aponta para a URL programática. O schema da página localizada é um `Service` com `areaServed`. Não publique um `LocalBusiness` por cidade. O schema só sai quando a página tem cidade e estado. Uma página só de serviço não inventa área atendida.
 
 O endereço postal, quando existe, sai na entidade da empresa e só fora das páginas locais. Use o endereço real da sede.
-
-## Prime House
-
-Para repetir a instalação de referência:
-
-1. Importe `examples/prime-house-flooring.json` na aba **Projeto**.
-2. Desative os snippets PHP de URL, shortcode, schema, sitemap HTML, header do Kadence e registro de CPT. A lista está no `README.md`.
-3. Deixe ativos o CSS de breadcrumb, o CSS do `ph-section-label`, o botão de ligação e o rodapé.
-4. Não refaça os templates 2172 e 2173. Eles já chamam `[phf_city_state]`, `[phf_faq_question index="1"]` e as tags `phf-location-url`, `phf-service-hero-image` e `phf-service-cover-image`.
 
 ## Quando a URL responde 404
 
