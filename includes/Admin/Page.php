@@ -14,6 +14,7 @@ use LocalRank\ProgrammaticSeo\Modules\Urls_Module;
 use LocalRank\ProgrammaticSeo\Support\Company_Builder;
 use LocalRank\ProgrammaticSeo\Support\Presets;
 use LocalRank\ProgrammaticSeo\Support\Reference;
+use LocalRank\ProgrammaticSeo\Support\Wizard;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -53,8 +54,8 @@ final class Page {
 	 */
 	public function menu() {
 		add_menu_page(
-			__( 'SEO programático', 'local-rank-programmatic-seo' ),
-			__( 'SEO programático', 'local-rank-programmatic-seo' ),
+			__( 'Programático', 'local-rank-programmatic-seo' ),
+			__( 'Programático', 'local-rank-programmatic-seo' ),
 			'manage_options',
 			'lrps',
 			array( $this, 'render' ),
@@ -115,6 +116,11 @@ final class Page {
 			$this->redirect( 'checklist', 'roteiro' );
 		}
 
+		if ( 'wizard' === $action ) {
+			$this->apply_wizard();
+			return;
+		}
+
 		if ( 'preset' === $action ) {
 			$this->apply_preset();
 			return;
@@ -145,8 +151,11 @@ final class Page {
 			return;
 		}
 
-		$tab    = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'roteiro';
 		$config = $this->config->all();
+		$tab    = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+		if ( '' === $tab ) {
+			$tab = Wizard::is_ready( $config ) ? 'roteiro' : 'comecar';
+		}
 		$errors = get_transient( 'lrps_form_errors_' . get_current_user_id() );
 		$old    = get_transient( 'lrps_form_old_' . get_current_user_id() );
 		delete_transient( 'lrps_form_errors_' . get_current_user_id() );
@@ -160,9 +169,9 @@ final class Page {
 
 		echo '<div class="wrap lrps-wrap">';
 		echo '<header class="lrps-hero">';
-		echo '<img class="lrps-logo" src="' . esc_url( LRPS_URL . 'assets/brand/local-rank-white-green.svg' ) . '" alt="' . esc_attr__( 'Local Rank', 'local-rank-programmatic-seo' ) . '" />';
-		echo '<h1>' . esc_html__( 'SEO programático', 'local-rank-programmatic-seo' ) . '</h1>';
-		echo '<p class="lrps-kicker">' . esc_html__( 'O roteiro do SEO programático fica aqui. ACF, Elementor, WP All Import e Yoast continuam nas etapas deles. Este plugin guarda a arquitetura e a lógica dinâmica, sem snippet PHP por cliente.', 'local-rank-programmatic-seo' ) . '</p>';
+		$this->logo();
+		echo '<h1>' . esc_html__( 'Programático', 'local-rank-programmatic-seo' ) . '</h1>';
+		echo '<p class="lrps-kicker">' . esc_html( $this->kicker( $tab ) ) . '</p>';
 		echo '</header>';
 		$this->tabs( $tab );
 		$this->flash();
@@ -171,7 +180,9 @@ final class Page {
 			echo '<div class="notice notice-error"><p>' . esc_html( implode( ' ', $errors ) ) . '</p></div>';
 		}
 
-		if ( 'project' === $tab ) {
+		if ( 'comecar' === $tab ) {
+			Setup::render( $this->config, $old );
+		} elseif ( 'project' === $tab ) {
 			$this->render_project( $config, $old );
 		} elseif ( 'reference' === $tab ) {
 			$this->render_reference( $config );
@@ -422,7 +433,8 @@ final class Page {
 	 */
 	private function tabs( $current ) {
 		$tabs = array(
-			'roteiro'     => __( 'Roteiro', 'local-rank-programmatic-seo' ),
+			'comecar'     => __( 'Começar', 'local-rank-programmatic-seo' ),
+			'roteiro'     => __( 'Próximos passos', 'local-rank-programmatic-seo' ),
 			'project'     => __( 'Projeto', 'local-rank-programmatic-seo' ),
 			'reference'   => __( 'Referência', 'local-rank-programmatic-seo' ),
 			'diagnostics' => __( 'Diagnóstico', 'local-rank-programmatic-seo' ),
@@ -456,6 +468,7 @@ final class Page {
 			'import'    => __( 'JSON importado.', 'local-rank-programmatic-seo' ),
 			'preset'    => __( 'Modelo aplicado. Confira as URLs de exemplo no roteiro.', 'local-rank-programmatic-seo' ),
 			'checklist' => __( 'Roteiro salvo.', 'local-rank-programmatic-seo' ),
+			'wizard'    => __( 'Estrutura criada. As rotas e os shortcodes já existem. Siga os passos abaixo.', 'local-rank-programmatic-seo' ),
 		);
 		if ( isset( $messages[ $notice ] ) ) {
 			echo '<div class="notice notice-success"><p>' . esc_html( $messages[ $notice ] ) . '</p></div>';
@@ -556,7 +569,7 @@ final class Page {
 	 * @return array<string,mixed>
 	 */
 	private function remember( array $input ) {
-		$keep = array( 'prefix', 'cpt', 'taxonomy', 'trade_label', 'levels_json', 'cities_csv', 'services_json', 'reserved_slugs', 'fields' );
+		$keep = array( 'prefix', 'cpt', 'taxonomy', 'trade_label', 'levels_json', 'cities_csv', 'services_json', 'reserved_slugs', 'fields', 'client_name', 'model', 'parent_slug', 'parent_label', 'places', 'offers' );
 		$old  = array();
 		foreach ( $keep as $key ) {
 			if ( isset( $input[ $key ] ) ) {
@@ -636,6 +649,55 @@ final class Page {
 	private function checkbox( $name, $label, $checked, $group = '', $key = '' ) {
 		unset( $group, $key );
 		echo '<label class="lrps-checkline"><input type="hidden" name="' . esc_attr( $name ) . '" value="0" /><input type="checkbox" name="' . esc_attr( $name ) . '" value="1"' . checked( $checked, true, false ) . ' /> <span>' . esc_html( $label ) . '</span></label>';
+	}
+
+	/**
+	 * Prints the brand mark from the plugin file, so a blocked image URL still shows it.
+	 */
+	private function logo() {
+		$path = LRPS_PATH . 'assets/brand/local-rank-white-green.svg';
+		$svg  = is_readable( $path ) ? file_get_contents( $path ) : '';
+		if ( ! is_string( $svg ) || false === strpos( $svg, '<svg' ) ) {
+			echo '<p class="lrps-wordmark">Local Rank</p>';
+			return;
+		}
+		$svg = preg_replace( '/<\?xml[^>]*\?>/', '', $svg );
+		$svg = preg_replace( '/<svg\b/', '<svg class="lrps-logo" role="img" aria-label="Local Rank"', (string) $svg, 1 );
+		echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- local brand file, not user input.
+	}
+
+	/**
+	 * One sentence under the title, for the screen that is open.
+	 *
+	 * @param string $tab Current tab.
+	 * @return string
+	 */
+	private function kicker( $tab ) {
+		if ( 'comecar' === $tab ) {
+			return __( 'Preencha o formulário. O plugin monta as URLs, os shortcodes e o schema. Depois, a próxima aba mostra o que falta fazer no ACF, no Elementor, no WP All Import e no Yoast.', 'local-rank-programmatic-seo' );
+		}
+		if ( 'roteiro' === $tab ) {
+			return __( 'A parte técnica deste cliente já está no plugin. Siga a ordem. ACF, Elementor, WP All Import e Yoast continuam nas etapas deles.', 'local-rank-programmatic-seo' );
+		}
+		return __( 'Ajustes do projeto. O formulário da aba Começar cobre o caminho normal.', 'local-rank-programmatic-seo' );
+	}
+
+	/**
+	 * Saves the setup form and opens the handoff.
+	 */
+	private function apply_wizard() {
+		$input  = wp_unslash( $_POST );
+		$input  = is_array( $input ) ? $input : array();
+		$result = Wizard::build( $this->config->all(), $input );
+		if ( ! empty( $result['errors'] ) ) {
+			set_transient( 'lrps_form_errors_' . get_current_user_id(), $result['errors'], MINUTE_IN_SECONDS );
+			set_transient( 'lrps_form_old_' . get_current_user_id(), $this->remember( $input ), MINUTE_IN_SECONDS );
+			$this->redirect( 'error', 'comecar' );
+		}
+
+		$this->config->save( $result['config'] );
+		delete_option( Urls_Module::REWRITE_OPTION );
+		$this->redirect( 'wizard', 'roteiro' );
 	}
 
 	/**
