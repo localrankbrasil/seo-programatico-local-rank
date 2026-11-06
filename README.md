@@ -8,7 +8,7 @@ Descrição curta, para a página do repositório:
 
 O passo a passo de instalação, das quatro abas e de um cliente novo está no [GUIA.md](GUIA.md). O processo completo segue o [guia de SEO programático](https://app.notion.com/p/4095fd8730d88064bef7e20edf85ef10).
 
-A tela no wp-admin usa a marca da Local Rank: o logo branco e verde no azul `#0e1d38`, Sora nos títulos, Manrope no texto e o verde `#a3d115` nas ações. O plugin não registra field group; só preenche as opções do select de cidade a partir do catálogo. O prefixo `phf` e o catálogo da Prime House Flooring são o exemplo de um cliente. O próximo cliente ganha o próprio prefixo, os próprios níveis e o próprio catálogo.
+A tela no wp-admin usa a marca da Local Rank: o logo branco e verde no azul `#0e1d38`, Sora nos títulos, Manrope no texto e o verde `#a3d115` nas ações. O plugin não registra field group; só preenche as opções do select de cidade a partir do catálogo. Cada cliente ganha o próprio prefixo, os próprios níveis e o próprio catálogo.
 
 ## O que entra em cada página
 
@@ -26,7 +26,7 @@ O CPT é plano. A hierarquia pública sai dos campos, do catálogo e, quando exi
 
 | Modelo | URLs | Breadcrumb |
 | --- | --- | --- |
-| Cidade e serviço | `/{cidade}/` e `/{cidade}/{servico}/` | Home, a página de áreas, a cidade e o serviço. É o modelo da Prime House. `/service-areas/` não é um nível. |
+| Cidade e serviço | `/{cidade}/` e `/{cidade}/{servico}/` | Home, a página de áreas, a cidade e o serviço. `/service-areas/` não é um nível. |
 | Filha de uma página estática | `/services/{servico}/` e `/services/{servico}/{cidade}/` | Home, Services, o serviço e a cidade. `/services/` continua uma página comum. |
 | Estado, cidade e serviço | `/{estado}/`, `/{estado}/{cidade}/` e `/{estado}/{cidade}/{servico}/` | Sobe um nível de cada vez. |
 
@@ -43,8 +43,7 @@ Cidade atendida não vira endereço de filial. O schema localizado é um `Servic
 1. Copie esta pasta para `wp-content/plugins/local-rank-programmatic-seo`.
 2. Ative **Local Rank — Programático**.
 3. Abra **Programático** no admin. A primeira aba, **Começar**, pede o cliente, as cidades e os serviços. **Próximos passos** mostra o que falta fazer no ACF, no Elementor, no WP All Import e no Yoast.
-4. Para um cliente novo, escolha o modelo, preencha prefixo, campos e catálogos.
-5. Para repetir a Prime House, importe `examples/prime-house-flooring.json` e desative os snippets PHP listados abaixo antes de publicar. O JSON traz o catálogo fechado que está no ar: as cidades do tri-state, os seis serviços com hero, galeria e problems, os subcampos reais do FAQ e os IDs dos templates 2172 e 2173.
+4. Para um cliente novo, preencha a aba Começar. O prefixo, as cidades e os serviços são desse site.
 
 O ambiente precisa de WordPress 6.2+, PHP 7.4+, ACF Pro para os campos e Elementor (com Elementor Pro no Theme Builder) para Dynamic Tags e Saved Templates. Yoast é opcional; o canonical e, se você ligar, o BreadcrumbList conversam com ele.
 
@@ -52,7 +51,7 @@ Se o CPT e a taxonomia já existem, o módulo de estrutura não registra de novo
 
 ## Projeto
 
-O prefixo vira o nome público. Com `phf`, os templates atuais seguem usando `[phf_city_state]` e a Dynamic Tag `phf-location-url`. Com `lrps`, os mesmos controles nascem como `[lrps_city_state]` e `lrps-location-url`.
+O prefixo vira o nome público dos shortcodes deste cliente. Com `lr`, os controles nascem como `[lr_city_state]` e `lr-location-url`.
 
 Os slugs de cidade e serviço precisam ser os mesmos no catálogo, no ACF, na URL e na planilha. Slug fora do catálogo não gera rota. Slug reservado (`services`, `service-areas`, `blog` e a lista da tela) também não.
 
@@ -76,29 +75,7 @@ A aba **Diagnóstico** confere CPT, termos, catálogo, regras, colisão com pág
 
 Antes de importar o lote, o diagnóstico precisa estar sem bloqueio. Uma combinação duplicada de cidade, nível e serviço não resolve: a URL cai em 404 em vez de escolher um dos registros.
 
-## O que substitui no WPCode da Prime House
-
-O site de referência usa snippets PHP no WPCode. Com o prefixo `phf` e o JSON de exemplo importado, o plugin assume estes:
-
-| Snippet | O que o plugin faz no lugar |
-| --- | --- |
-| PHF \| SEO Programmatic \| Hierarchical URLs | Módulo de URLs. `/{cidade}/` e `/{cidade}/{servico}/`, só com slug do catálogo. |
-| PHF \| Programmatic SEO Core | Catálogo, contexto, mapa, breadcrumb, schema e Dynamic Tags `phf-*`. |
-| PHF \| City Shortcodes | `[phf_city]`, `[phf_city_state]`, `[phf_service_name]`, hero, mapa e `[phf_schema_city]` / `[phf_schema_service]`. |
-| PHF \| FAQ Item Shortcodes | `[phf_faq_question index="1"]` e `[phf_faq_answer index="1"]`. O repeater real usa `phf_faq_question` e `phf_faq_answer`. |
-| PHF \| Dynamic Problems Section | `[phf_problems_section]`, pelo `problems_template_id` do serviço. |
-| PHF \| Dynamic Service Gallery | `[phf_service_gallery]`. Laminate continua com ID 0 e não herda outra galeria. |
-| Prime House Design System – Section Label | `[section_label]` com a classe no próprio título. Na Prime House a classe é `ph-section-label`, que o CSS do design system já estiliza. |
-| PHF \| HTML Sitemap | `[phf_html_sitemap]` na página `/sitemap/`. |
-| Local Schema Markup | JSON-LD da empresa nas páginas que não são location page. |
-| PHF \| Kadence Location Header | Header transparente, título oculto e layout full-width nas location pages. |
-| PHF \| SEO Programmatic \| CPT Taxonomy ACF | O CPT e a taxonomia, se ainda não existirem, a cópia do select para o termo e as choices de cidade. O field group em si continua no ACF; o registro em PHP desse snippet já estava desligado. |
-
-Desative esses snippets PHP antes de deixar o plugin publicado. Dois registros da mesma URL ou do mesmo shortcode brigam entre si.
-
-Podem ficar ativos, porque não são a lógica da etapa 03: o CSS de breadcrumb, o CSS global e do `ph-section-label`, o botão flutuante de ligação, o ajuste de espaçamento de heading e os snippets de rodapé do Kadence.
-
-Os templates que já estão no Elementor não precisam ser refeitos. Eles chamam `[phf_city_state]`, `[phf_faq_question index="1"]`, `[section_label tag="h2" text="... {city_state}"]` e as Dynamic Tags `phf-location-url`, `phf-service-hero-image`, `phf-service-cover-image` e `phf-city-content`. O nome do controle de URL continua `service`.
+Se o site já tem snippets PHP registrando as mesmas URLs ou os mesmos shortcodes, desative esses snippets antes de publicar o plugin. CSS de layout pode continuar. Dois registros da mesma rota brigam entre si.
 
 ## O que este plugin não faz
 
@@ -107,7 +84,7 @@ Os templates que já estão no Elementor não precisam ser refeitos. Eles chamam
 - Não importa a planilha. Isso continua no WP All Import, nas etapas 06 a 09.
 - Não monta a página `/service-areas/`. O sitemap HTML é outra peça: a lista técnica em `/sitemap/`.
 - Não liga FAQPage nem troca o BreadcrumbList do Yoast por padrão. As duas saídas são opcionais, porque duplicar schema é pior do que omitir.
-- Não regrava as condições de exibição do Theme Builder. Na Prime House elas já apontam o template 2172 para cidade e o 2173 para serviço.
+- Não regrava as condições de exibição do Theme Builder. Elas continuam escolhendo o template de cada nível.
 
 ## Testes
 
