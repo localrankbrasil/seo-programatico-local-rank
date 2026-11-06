@@ -26,8 +26,8 @@ WordPress 6.2+, PHP 7.4+, ACF Pro e Elementor. Elementor Pro entra quando o temp
 ## Instalar
 
 1. Copie a pasta para `wp-content/plugins/local-rank-programmatic-seo`.
-2. Ative **Local Rank — SEO Programático**.
-3. No admin, abra **SEO programático**. A primeira aba é **Roteiro**.
+2. Ative **Local Rank — Programático**.
+3. No admin, abra **Programático**. A aba **Começar** é um formulário: nome do cliente, ofício, prefixo, formato da URL, cidades e serviços. Ao salvar, o plugin cria as rotas, os shortcodes e o schema. A aba **Próximos passos** mostra o que ainda é feito no ACF, no Elementor, no WP All Import e no Yoast.
 
 No site que já tem snippets PHP das mesmas URLs, desative esses snippets antes de publicar o plugin. Dois registros da mesma rota ou do mesmo shortcode brigam entre si. CSS de layout pode ficar.
 
@@ -35,7 +35,8 @@ No site que já tem snippets PHP das mesmas URLs, desative esses snippets antes 
 
 | Aba | Para que serve |
 | --- | --- |
-| Roteiro | Escolher o modelo, ver a cobertura, copiar os campos do ACF, copiar o CSV e marcar as nove etapas. |
+| Começar | Formulário do cliente: formato da URL, cidades e serviços. Salvar cria a estrutura. |
+| Próximos passos | Ver a cobertura, copiar os campos do ACF, copiar o CSV e marcar as nove etapas. |
 | Projeto | Prefixo, catálogos, níveis, breadcrumb, schema, empresa, módulos e importação do JSON. |
 | Referência | Shortcodes, Dynamic Tags e tokens do prefixo deste cliente, para colar no Elementor. |
 | Diagnóstico | Conferir CPT, catálogo, rotas, página estática no mesmo slug, combinação duplicada e templates antes do lote. |
@@ -44,7 +45,7 @@ No site que já tem snippets PHP das mesmas URLs, desative esses snippets antes 
 
 ### 1. Arquitetura
 
-Na aba **Roteiro**, escolha um modelo. Ele troca só os níveis e o breadcrumb de cada nível. Catálogo, prefixo e campos permanecem.
+Na aba **Começar**, escolha o formato da URL. Ele define os níveis e o breadcrumb. Catálogo, prefixo e campos permanecem. A aba **Próximos passos** mostra o resultado.
 
 | Modelo | Quando usar | URLs |
 | --- | --- | --- |
@@ -54,7 +55,7 @@ Na aba **Roteiro**, escolha um modelo. Ele troca só os níveis e o breadcrumb d
 
 Confira a URL de exemplo e a coluna **Páginas**. A conta é a cobertura real: cada nível multiplica só os catálogos que entram na URL. Dois níveis de cidade e serviço viram cidades + cidades × serviços.
 
-Se a página estática não se chama `services`, aplique o segundo modelo e, na aba **Projeto**, edite o `prefix` e o caminho do `trail` no JSON dos níveis. Coloque esse slug na lista de slugs reservados, para uma cidade não capturar a página comum.
+Se a página estática não se chama `services`, escolha o segundo formato na aba **Começar** e escreva o nome e o endereço dessa página. O plugin reserva esse slug para uma cidade não capturar a página comum.
 
 Sem `trail`, o breadcrumb antigo continua valendo: Home, a página de áreas e a cidade. Com `trail`, cada nível declara a própria trilha: `home`, `static`, `ancestor` e `current`.
 
@@ -79,7 +80,7 @@ O mesmo slug precisa existir no catálogo, no ACF, na URL e na planilha.
 
 ### 4. Campos no ACF
 
-O plugin não cria o grupo. Na aba **Roteiro**, a tabela **Campos para criar no ACF** lista o field name, o tipo e o que colocar. Crie esses nomes no ACF Pro.
+O plugin não cria o grupo. Na aba **Próximos passos**, a tabela **Campos para criar no ACF** lista o field name, o tipo e o que colocar. Crie esses nomes no ACF Pro.
 
 O select de cidade é preenchido pelo catálogo. Não mantenha essa lista na mão. O select de nível usa um valor por nível, por exemplo `level_1_city` e `level_2_service`. O plugin copia essa escolha para o termo da taxonomia.
 
@@ -97,7 +98,7 @@ Regras que evitam quebra:
 
 ### 6. Planilha e importação
 
-Na aba **Roteiro**, copie o CSV de exemplo. A coluna `unique_key` é o identificador único do WP All Import.
+Na aba **Próximos passos**, copie o CSV de exemplo. A coluna `unique_key` é o identificador único do WP All Import.
 
 - Página de cidade: `{city_slug}__city`, por exemplo `greenwich__city`.
 - Página de serviço: `{city_slug}__service__{service_slug}`, por exemplo `greenwich__service__tile-installation`.

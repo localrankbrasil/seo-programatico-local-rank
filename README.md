@@ -41,8 +41,8 @@ Cidade atendida não vira endereço de filial. O schema localizado é um `Servic
 ## Instalar
 
 1. Copie esta pasta para `wp-content/plugins/local-rank-programmatic-seo`.
-2. Ative **Local Rank — SEO Programático**.
-3. Abra **SEO programático** no admin. A primeira aba é o Roteiro.
+2. Ative **Local Rank — Programático**.
+3. Abra **Programático** no admin. A primeira aba, **Começar**, pede o cliente, as cidades e os serviços. **Próximos passos** mostra o que falta fazer no ACF, no Elementor, no WP All Import e no Yoast.
 4. Para um cliente novo, escolha o modelo, preencha prefixo, campos e catálogos.
 5. Para repetir a Prime House, importe `examples/prime-house-flooring.json` e desative os snippets PHP listados abaixo antes de publicar. O JSON traz o catálogo fechado que está no ar: as cidades do tri-state, os seis serviços com hero, galeria e problems, os subcampos reais do FAQ e os IDs dos templates 2172 e 2173.
 
