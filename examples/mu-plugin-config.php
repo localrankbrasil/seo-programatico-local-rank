@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_filter(
 	'lrps_config',
 	static function ( $config ) {
-		$path = __DIR__ . '/prime-house-flooring.json';
+		$path = __DIR__ . '/projeto.json';
 		if ( ! is_readable( $path ) ) {
 			return $config;
 		}

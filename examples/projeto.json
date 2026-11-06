@@ -1,0 +1,32 @@
+{
+  "prefix": "lr",
+  "trade_label": "Serviço local",
+  "cities": [
+    {
+      "slug": "austin",
+      "name": "Austin",
+      "state": "TX"
+    },
+    {
+      "slug": "dallas",
+      "name": "Dallas",
+      "state": "TX"
+    }
+  ],
+  "services": [
+    {
+      "slug": "manutencao",
+      "display_name": "Manutenção",
+      "hero_suffix": "",
+      "hero_description": "",
+      "hero_image": "",
+      "cover_image": "",
+      "problems_template_id": 0,
+      "gallery_template_id": 0
+    }
+  ],
+  "company": {
+    "enabled": false,
+    "name": "Cliente exemplo"
+  }
+}
