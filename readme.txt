@@ -4,7 +4,7 @@ Tags: seo, local seo, elementor, schema
 Requires at least: 6.2
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,15 +40,18 @@ Os campos continuam no ACF Pro. O layout continua no Elementor. Prefixo, catálo
 
 Não. O grupo continua sendo criado e editado no ACF Pro.
 
-= Posso usar em outro cliente além da Prime House? =
+= Cada cliente precisa do próprio prefixo? =
 
-Sim. Troque prefixo, nomes de campo, níveis, catálogos, rótulo do ofício e IDs de template. O exemplo `examples/prime-house-flooring.json` mostra o formato.
+Sim. O prefixo só nomeia os shortcodes daquele site. Troque também níveis, catálogos, rótulo do ofício e IDs de template. `examples/projeto.json` mostra o formato, sem dados de um cliente real.
 
 = Por que uma cidade do catálogo retorna 404? =
 
 A rota reconhece o catálogo, mas só publica a página se existir exatamente um registro daquele nível, cidade e serviço. Combinação duplicada também vira 404.
 
 == Changelog ==
+
+= 1.3.1 =
+* Remove o prefixo e o catálogo de um cliente antigo. Cada site informa o próprio prefixo no formulário.
 
 = 1.3.0 =
 * A primeira tela é um formulário: cliente, formato da URL, cidades e serviços. O plugin monta a estrutura e a aba Próximos passos lista o que continua no ACF, no Elementor, no WP All Import e no Yoast.
@@ -67,7 +70,7 @@ A rota reconhece o catálogo, mas só publica a página se existir exatamente um
 * Três modelos prontos: cidade e serviço, filha de Services, e estado + cidade + serviço.
 
 = 1.1.0 =
-* Alinha o exemplo da Prime House ao catálogo, aos FAQs e aos shortcodes que já estão nos templates.
+* Alinha o exemplo de projeto ao catálogo, aos FAQs e aos shortcodes dos templates.
 * O section_label imprime a classe no próprio título, para o design system existente continuar valendo.
 * Sitemap HTML, header do Kadence nas location pages e escolhas de cidade no ACF passam a ser módulos do plugin.
 

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Neutral defaults for a new client. Prime House lives in examples/.
+ * Neutral defaults for a new client.
  */
 final class Defaults {
 
@@ -34,7 +34,6 @@ final class Defaults {
 			'levels'           => self::levels(),
 			'cities'           => array(),
 			'services'         => array(),
-			'dimensions'       => array(),
 			'breadcrumbs'      => array(
 				'home_label'  => 'Home',
 				'areas_label' => 'Service Areas',
