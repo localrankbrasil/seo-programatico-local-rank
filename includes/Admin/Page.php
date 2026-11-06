@@ -207,12 +207,12 @@ final class Page {
 		echo '<input type="hidden" name="lrps_action" value="save" />';
 
 		echo '<div class="lrps-grid">';
-		$this->card_open( __( 'Identidade do projeto', 'local-rank-programmatic-seo' ), __( 'O prefixo vira o nome dos shortcodes. Em um site que já usa phf_, importe o exemplo da Prime House em vez de manter lrps_.', 'local-rank-programmatic-seo' ) );
+		$this->card_open( __( 'Identidade do projeto', 'local-rank-programmatic-seo' ), __( 'O prefixo é deste cliente e vira o nome dos shortcodes. lr vira [lr_city_state]. Cada site ganha o próprio prefixo.', 'local-rank-programmatic-seo' ) );
 		$this->text_field( 'prefix', __( 'Prefixo', 'local-rank-programmatic-seo' ), $this->old_or( $old, 'prefix', $config['prefix'] ), 'lrps-prefix' );
 		$this->text_field( 'cpt', __( 'CPT', 'local-rank-programmatic-seo' ), $this->old_or( $old, 'cpt', $config['cpt'] ) );
 		$this->text_field( 'taxonomy', __( 'Taxonomia de nível', 'local-rank-programmatic-seo' ), $this->old_or( $old, 'taxonomy', $config['taxonomy'] ) );
 		$this->text_field( 'trade_label', __( 'Rótulo do ofício', 'local-rank-programmatic-seo' ), $this->old_or( $old, 'trade_label', $config['trade_label'] ) );
-		echo '<p class="description">' . esc_html__( 'Exemplo: Flooring Contractor. Entra no schema e no título das páginas de cidade.', 'local-rank-programmatic-seo' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Exemplo: serviço local. Entra no schema e no título das páginas de cidade.', 'local-rank-programmatic-seo' ) . '</p>';
 		$this->checkbox( 'strict_levels', __( 'Bloquear contexto quando taxonomia e select divergirem', 'local-rank-programmatic-seo' ), ! empty( $config['strict_levels'] ) );
 		$this->checkbox( 'skip_self_links', __( 'Omitir link quando o destino é a própria página', 'local-rank-programmatic-seo' ), ! empty( $config['skip_self_links'] ) );
 		$this->card_close();
@@ -344,7 +344,7 @@ final class Page {
 			}
 		}
 		echo '<label class="lrps-stack"><span>' . esc_html__( 'Classe do mapa', 'local-rank-programmatic-seo' ) . '</span><input type="text" name="map[class]" value="' . esc_attr( (string) $config['map']['class'] ) . '" /></label>';
-		echo '<p class="description">' . esc_html__( 'Opcional. Se o template já tem .prime-map, informe prime-map para aplicar o contrato de altura e iframe.', 'local-rank-programmatic-seo' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Opcional. Informe a classe CSS que o template já usa no mapa, para aplicar o contrato de altura e iframe.', 'local-rank-programmatic-seo' ) . '</p>';
 		$this->card_close();
 		echo '</div>';
 
@@ -356,7 +356,7 @@ final class Page {
 		wp_nonce_field( 'lrps_save' );
 		echo '<input type="hidden" name="lrps_action" value="import" />';
 		echo '<h2>' . esc_html__( 'Importar JSON', 'local-rank-programmatic-seo' ) . '</h2>';
-		echo '<p>' . esc_html__( 'Use o arquivo de exemplo do repositório como ponto de partida e troque prefixo, campos, catálogos e IDs.', 'local-rank-programmatic-seo' ) . '</p>';
+		echo '<p>' . esc_html__( 'O JSON traz o projeto inteiro. Troque prefixo, catálogos e IDs para este cliente. O arquivo examples/projeto.json mostra o formato, sem dados de um cliente real.', 'local-rank-programmatic-seo' ) . '</p>';
 		echo '<input type="file" name="lrps_import" accept="application/json,.json" required />';
 		submit_button( __( 'Importar', 'local-rank-programmatic-seo' ), 'secondary' );
 		echo '</form>';
