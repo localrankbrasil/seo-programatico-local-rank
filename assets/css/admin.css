@@ -40,7 +40,17 @@
 	display: block;
 	height: 42px;
 	width: auto;
+	max-width: 280px;
 	margin: 0 0 22px;
+}
+
+.lrps-wordmark {
+	margin: 0 0 18px;
+	color: #ffffff;
+	font-family: "Sora", sans-serif;
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
 }
 
 .lrps-hero h1 {
@@ -346,6 +356,74 @@
 	border-color: #0e1d38;
 	background: #b6e534;
 	color: #0e1d38;
+}
+
+.lrps-steps-form {
+	display: grid;
+	gap: 16px;
+}
+
+.lrps-step-no {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	margin-right: 10px;
+	border-radius: 999px;
+	background: #0e1d38;
+	color: #ffffff;
+	font-family: "Sora", sans-serif;
+	font-size: 14px;
+	vertical-align: 2px;
+}
+
+.lrps-choices {
+	display: grid;
+	gap: 10px;
+}
+
+.lrps-choice {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 12px;
+	align-items: start;
+	margin: 0;
+	padding: 14px 16px;
+	border-radius: 10px;
+	background: #efefef;
+	cursor: pointer;
+}
+
+.lrps-choice input {
+	margin-top: 4px;
+}
+
+.lrps-choice__text {
+	display: block;
+	margin-top: 2px;
+}
+
+.lrps-choice code {
+	display: block;
+	margin-top: 8px;
+}
+
+.lrps-parent {
+	margin-top: 14px;
+}
+
+.lrps-parent[hidden] {
+	display: none;
+}
+
+.lrps-now {
+	margin: 0 0 8px;
+	padding-left: 22px;
+}
+
+.lrps-now li {
+	margin: 0 0 10px;
 }
 
 @media (max-width: 782px) {
