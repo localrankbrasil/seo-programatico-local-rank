@@ -20,6 +20,7 @@ use LocalRank\ProgrammaticSeo\Support\Rewrite_Compiler;
 use LocalRank\ProgrammaticSeo\Support\Schema_Builder;
 use LocalRank\ProgrammaticSeo\Support\Slug;
 use LocalRank\ProgrammaticSeo\Support\Token_Expander;
+use LocalRank\ProgrammaticSeo\Support\Wizard;
 use PHPUnit\Framework\TestCase;
 
 class LogicTest extends TestCase {
@@ -471,5 +472,49 @@ class LogicTest extends TestCase {
 
 		$this->assertSame( '2026/08/hero.jpg', $result['config']['services'][0]['hero_image'] );
 		$this->assertSame( '', $result['config']['services'][0]['cover_image'] );
+	}
+
+	public function test_wizard_builds_a_project_from_plain_answers() {
+		$result = Wizard::build(
+			Defaults::all(),
+			array(
+				'client_name'  => 'Prime House Flooring',
+				'trade_label'  => 'Flooring Contractor',
+				'prefix'       => 'phf',
+				'model'        => 'static_service',
+				'parent_slug'  => 'pisos',
+				'parent_label' => 'Pisos',
+				'places'       => "Greenwich, CT\nStamford, CT",
+				'offers'       => "Tile Installation\nHardwood Flooring",
+			)
+		);
+
+		$this->assertSame( array(), $result['errors'] );
+		$this->assertSame( 'phf', $result['config']['prefix'] );
+		$this->assertSame( 'phf_city_slug', $result['config']['fields']['city_slug'] );
+		$this->assertSame( 'Prime House Flooring', $result['config']['company']['name'] );
+		$this->assertSame( array( 'greenwich', 'stamford' ), array_column( $result['config']['cities'], 'slug' ) );
+		$this->assertSame( 'tile-installation', $result['config']['services'][0]['slug'] );
+		$this->assertSame( array( 'pisos' ), $result['config']['levels'][0]['prefix'] );
+		$this->assertSame( '/pisos/', $result['config']['levels'][0]['trail'][1]['path'] );
+		$this->assertTrue( Wizard::is_ready( $result['config'] ) );
+		$this->assertSame( 'static_service', Wizard::model_of( $result['config']['levels'] ) );
+	}
+
+	public function test_wizard_asks_for_a_city_and_a_service() {
+		$result = Wizard::build(
+			Defaults::all(),
+			array(
+				'client_name' => 'Casa',
+				'trade_label' => 'Limpeza',
+				'prefix'      => 'lr',
+				'model'       => 'city_service',
+				'places'      => '',
+				'offers'      => '',
+			)
+		);
+
+		$this->assertNotEmpty( $result['errors'] );
+		$this->assertFalse( Wizard::is_ready( $result['config'] ) );
 	}
 }
