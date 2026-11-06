@@ -27,31 +27,31 @@ class LogicTest extends TestCase {
 
 	public function test_slug_strips_accents_and_spaces() {
 		$this->assertSame( 'sao-paulo', Slug::normalize( 'São Paulo' ) );
-		$this->assertSame( 'hardwood-floor-repair-infill', Slug::normalize( 'Hardwood Floor Repair & Infill' ) );
+		$this->assertSame( 'manutencao-reparo', Slug::normalize( 'Manutenção & Reparo' ) );
 	}
 
 	public function test_path_requires_catalog_membership() {
 		$levels = Defaults::levels();
 		$catalogs = array(
-			'city'    => array( 'greenwich' ),
-			'service' => array( 'tile-installation' ),
+			'city'    => array( 'austin' ),
+			'service' => array( 'manutencao' ),
 		);
 
 		$this->assertSame(
-			'greenwich',
+			'austin',
 			Path_Builder::path(
 				$levels[0],
-				array( 'city' => 'greenwich' ),
+				array( 'city' => 'austin' ),
 				$catalogs
 			)
 		);
 		$this->assertSame(
-			'greenwich/tile-installation',
+			'austin/manutencao',
 			Path_Builder::path(
 				$levels[1],
 				array(
-					'city'    => 'greenwich',
-					'service' => 'tile-installation',
+					'city'    => 'austin',
+					'service' => 'manutencao',
 				),
 				$catalogs
 			)
@@ -61,7 +61,7 @@ class LogicTest extends TestCase {
 			Path_Builder::path(
 				$levels[1],
 				array(
-					'city'    => 'greenwich',
+					'city'    => 'austin',
 					'service' => 'not-a-service',
 				),
 				$catalogs
@@ -73,15 +73,15 @@ class LogicTest extends TestCase {
 		$path = Path_Builder::path(
 			Defaults::levels()[0],
 			array(
-				'city'    => 'greenwich',
-				'service' => 'tile-installation',
+				'city'    => 'austin',
+				'service' => 'manutencao',
 			),
 			array(
-				'city'    => array( 'greenwich' ),
-				'service' => array( 'tile-installation' ),
+				'city'    => array( 'austin' ),
+				'service' => array( 'manutencao' ),
 			)
 		);
-		$this->assertSame( 'greenwich', $path );
+		$this->assertSame( 'austin', $path );
 	}
 
 	public function test_rewrite_orders_service_before_city_and_drops_reserved_slugs() {
@@ -89,19 +89,19 @@ class LogicTest extends TestCase {
 			'location_page',
 			Defaults::levels(),
 			array(
-				'city'    => array( 'greenwich', 'blog' ),
-				'service' => array( 'tile-installation' ),
-				'state'   => array( 'ct' ),
+				'city'    => array( 'austin', 'blog' ),
+				'service' => array( 'manutencao' ),
+				'state'   => array( 'tx' ),
 			),
 			array( 'blog', 'services' )
 		);
 
 		$this->assertCount( 2, $rules );
-		$this->assertSame( 1, preg_match( '#' . $rules[0]['regex'] . '#', 'greenwich/tile-installation' ) );
-		$this->assertSame( 0, preg_match( '#' . $rules[0]['regex'] . '#', 'blog/tile-installation' ) );
-		$this->assertSame( 1, preg_match( '#' . $rules[1]['regex'] . '#', 'greenwich' ) );
+		$this->assertSame( 1, preg_match( '#' . $rules[0]['regex'] . '#', 'austin/manutencao' ) );
+		$this->assertSame( 0, preg_match( '#' . $rules[0]['regex'] . '#', 'blog/manutencao' ) );
+		$this->assertSame( 1, preg_match( '#' . $rules[1]['regex'] . '#', 'austin' ) );
 		$this->assertSame( 0, preg_match( '#' . $rules[1]['regex'] . '#', 'blog' ) );
-		$this->assertSame( 0, preg_match( '#' . $rules[1]['regex'] . '#', 'greenwich/tile-installation' ) );
+		$this->assertSame( 0, preg_match( '#' . $rules[1]['regex'] . '#', 'austin/manutencao' ) );
 		$this->assertStringContainsString( 'lrps_service=$matches[2]', $rules[0]['query'] );
 		$this->assertStringNotContainsString( 'lrps_service', $rules[1]['query'] );
 	}
@@ -109,36 +109,36 @@ class LogicTest extends TestCase {
 	public function test_literal_prefix_builds_a_child_of_a_static_page() {
 		$levels   = Presets::levels( 'static_service' );
 		$catalogs = array(
-			'city'    => array( 'greenwich' ),
-			'service' => array( 'tile-installation' ),
-			'state'   => array( 'ct' ),
+			'city'    => array( 'austin' ),
+			'service' => array( 'manutencao' ),
+			'state'   => array( 'tx' ),
 		);
 
 		$this->assertSame(
-			'services/tile-installation',
+			'services/manutencao',
 			Path_Builder::path(
 				$levels[0],
-				array( 'service' => 'tile-installation' ),
+				array( 'service' => 'manutencao' ),
 				$catalogs
 			)
 		);
 		$this->assertSame(
-			'services/tile-installation/greenwich',
+			'services/manutencao/austin',
 			Path_Builder::path(
 				$levels[1],
 				array(
-					'service' => 'tile-installation',
-					'city'    => 'greenwich',
+					'service' => 'manutencao',
+					'city'    => 'austin',
 				),
 				$catalogs
 			)
 		);
 
 		$rules = Rewrite_Compiler::compile( 'location_page', $levels, $catalogs, array( 'services', 'blog' ) );
-		$this->assertSame( 1, preg_match( '#' . $rules[0]['regex'] . '#', 'services/tile-installation/greenwich' ) );
-		$this->assertSame( 0, preg_match( '#' . $rules[0]['regex'] . '#', 'services/tile-installation' ) );
+		$this->assertSame( 1, preg_match( '#' . $rules[0]['regex'] . '#', 'services/manutencao/austin' ) );
+		$this->assertSame( 0, preg_match( '#' . $rules[0]['regex'] . '#', 'services/manutencao' ) );
 		$this->assertSame( 0, preg_match( '#' . $rules[1]['regex'] . '#', 'services' ) );
-		$this->assertSame( 1, preg_match( '#' . $rules[1]['regex'] . '#', 'services/tile-installation' ) );
+		$this->assertSame( 1, preg_match( '#' . $rules[1]['regex'] . '#', 'services/manutencao' ) );
 		$this->assertStringContainsString( 'lrps_level=service_city', $rules[0]['query'] );
 		$this->assertStringContainsString( 'lrps_service=$matches[1]', $rules[0]['query'] );
 		$this->assertStringContainsString( 'lrps_city=$matches[2]', $rules[0]['query'] );
@@ -146,23 +146,23 @@ class LogicTest extends TestCase {
 
 	public function test_playbook_counts_coverage_and_unique_keys() {
 		$config = array(
-			'trade_label' => 'Flooring Contractor',
+			'trade_label' => 'Serviço local',
 			'cities'      => array(
 				array(
-					'slug'  => 'greenwich',
-					'name'  => 'Greenwich',
-					'state' => 'CT',
+					'slug'  => 'austin',
+					'name'  => 'Austin',
+					'state' => 'TX',
 				),
 				array(
-					'slug'  => 'yonkers',
-					'name'  => 'Yonkers',
-					'state' => 'NY',
+					'slug'  => 'miami',
+					'name'  => 'Miami',
+					'state' => 'FL',
 				),
 			),
 			'services'    => array(
 				array(
-					'slug'         => 'tile-installation',
-					'display_name' => 'Tile Installation',
+					'slug'         => 'manutencao',
+					'display_name' => 'Manutenção',
 				),
 			),
 			'levels'      => Defaults::levels(),
@@ -170,14 +170,14 @@ class LogicTest extends TestCase {
 
 		$coverage = Playbook::coverage( $config );
 		$this->assertSame( 4, $coverage['pages'] );
-		$this->assertSame( '/greenwich/', $coverage['levels'][0]['example'] );
-		$this->assertSame( '/greenwich/tile-installation/', $coverage['levels'][1]['example'] );
+		$this->assertSame( '/austin/', $coverage['levels'][0]['example'] );
+		$this->assertSame( '/austin/manutencao/', $coverage['levels'][1]['example'] );
 		$this->assertSame( '{city_slug}__city', $coverage['levels'][0]['unique_key'] );
 		$this->assertSame( '{city_slug}__service__{service_slug}', $coverage['levels'][1]['unique_key'] );
 
 		$csv = Playbook::csv_text( $config );
-		$this->assertStringContainsString( 'greenwich__city', $csv );
-		$this->assertStringContainsString( 'greenwich__service__tile-installation', $csv );
+		$this->assertStringContainsString( 'austin__city', $csv );
+		$this->assertStringContainsString( 'austin__service__manutencao', $csv );
 		$this->assertStringContainsString( 'draft', $csv );
 
 		$three = Playbook::coverage(
@@ -187,9 +187,9 @@ class LogicTest extends TestCase {
 				'levels'   => Presets::levels( 'state_city_service' ),
 			)
 		);
-		$this->assertSame( '/ct/', $three['levels'][0]['example'] );
-		$this->assertSame( '/ct/greenwich/', $three['levels'][1]['example'] );
-		$this->assertSame( '/ct/greenwich/tile-installation/', $three['levels'][2]['example'] );
+		$this->assertSame( '/tx/', $three['levels'][0]['example'] );
+		$this->assertSame( '/tx/austin/', $three['levels'][1]['example'] );
+		$this->assertSame( '/tx/austin/manutencao/', $three['levels'][2]['example'] );
 		$this->assertSame( 2, $three['levels'][0]['count'] );
 		$this->assertSame( 2, $three['levels'][1]['count'] );
 		$this->assertSame( 2, $three['levels'][2]['count'] );
@@ -237,15 +237,15 @@ class LogicTest extends TestCase {
 		$service = Rewrite_Compiler::match_level(
 			$levels,
 			array(
-				'city'    => 'greenwich',
-				'service' => 'tile-installation',
+				'city'    => 'austin',
+				'service' => 'manutencao',
 				'state'   => '',
 			)
 		);
 		$city = Rewrite_Compiler::match_level(
 			$levels,
 			array(
-				'city'    => 'greenwich',
+				'city'    => 'austin',
 				'service' => '',
 				'state'   => '',
 			)
@@ -262,7 +262,7 @@ class LogicTest extends TestCase {
 		$this->assertSame( '', Map_Url::sanitize( 'http://www.google.com/maps/embed?pb=abc' ) );
 		$this->assertSame( '', Map_Url::sanitize( 'https://maps.google.com/maps/embed?pb=abc' ) );
 		$this->assertSame( '', Map_Url::sanitize( 'https://evil.com/maps/embed?pb=abc' ) );
-		$this->assertSame( '', Map_Url::sanitize( 'https://www.google.com/maps/place/Greenwich' ) );
+		$this->assertSame( '', Map_Url::sanitize( 'https://www.google.com/maps/place/Austin' ) );
 		$this->assertSame( '', Map_Url::sanitize( 'https://user:pass@www.google.com/maps/embed?pb=abc' ) );
 		$this->assertSame( '', Map_Url::sanitize( 'javascript:alert(1)' ) );
 		$this->assertSame( '', Map_Url::sanitize( 'https://www.google.com/maps/embed?pb=abc#frag' ) );
@@ -271,21 +271,21 @@ class LogicTest extends TestCase {
 
 	public function test_tokens_leave_unknown_braces_alone() {
 		$text = Token_Expander::expand(
-			'FLOORING CONTRACTOR IN {city_state} {unknown}',
-			array( 'city_state' => 'Greenwich, CT' )
+			'SERVICO LOCAL IN {city_state} {unknown}',
+			array( 'city_state' => 'Austin, TX' )
 		);
-		$this->assertSame( 'FLOORING CONTRACTOR IN Greenwich, CT {unknown}', $text );
+		$this->assertSame( 'SERVICO LOCAL IN Austin, TX {unknown}', $text );
 	}
 
 	public function test_schema_uses_area_served_and_not_an_address() {
 		$graph = Schema_Builder::service_graph(
 			array(
-				'name'        => 'Tile Installation in Greenwich, CT',
-				'type'        => 'Tile Installation',
-				'url'         => 'https://example.com/greenwich/tile-installation/',
+				'name'        => 'Manutenção in Austin, TX',
+				'type'        => 'Manutenção',
+				'url'         => 'https://example.com/austin/manutencao/',
 				'provider_id' => 'https://example.com/#organization',
-				'city'        => 'Greenwich',
-				'state'       => 'CT',
+				'city'        => 'Austin',
+				'state'       => 'TX',
 			)
 		);
 
@@ -294,21 +294,21 @@ class LogicTest extends TestCase {
 		$this->assertSame( 'Service', $service['@type'] );
 		$this->assertArrayNotHasKey( 'address', $service );
 		$this->assertArrayNotHasKey( 'geo', $service );
-		$this->assertSame( 'Greenwich', $service['areaServed']['name'] );
-		$this->assertSame( 'CT', $service['areaServed']['containedInPlace']['name'] );
+		$this->assertSame( 'Austin', $service['areaServed']['name'] );
+		$this->assertSame( 'TX', $service['areaServed']['containedInPlace']['name'] );
 		$this->assertSame( 'https://example.com/#organization', $service['provider']['@id'] );
 	}
 
 	public function test_schema_name_requires_every_token() {
 		$vars = array(
 			'trade_label'  => '',
-			'city_name'    => 'Greenwich',
-			'city_state'   => 'Greenwich, CT',
-			'service_name' => 'Tile Installation',
+			'city_name'    => 'Austin',
+			'city_state'   => 'Austin, TX',
+			'service_name' => 'Manutenção',
 		);
 		$this->assertSame( '', Schema_Builder::render_template( '{trade_label} in {city_state}', $vars ) );
 		$this->assertSame(
-			'Tile Installation in Greenwich, CT',
+			'Manutenção in Austin, TX',
 			Schema_Builder::render_template( '{service_name} in {city_state}', $vars )
 		);
 	}
@@ -316,7 +316,7 @@ class LogicTest extends TestCase {
 	public function test_json_ld_escapes_script_close() {
 		$script = Json_Ld::script(
 			array(
-				'name' => 'Greenwich</script><script>alert(1)',
+				'name' => 'Austin</script><script>alert(1)',
 			)
 		);
 		$this->assertStringNotContainsString( '</script><script>', $script );
@@ -327,7 +327,7 @@ class LogicTest extends TestCase {
 		$this->assertNull(
 			Company_Builder::entity(
 				array(
-					'name' => 'Prime House Flooring',
+					'name' => 'Empresa exemplo',
 					'type' => 'HomeAndConstructionBusiness',
 				),
 				'https://example.com/#business',
@@ -338,26 +338,26 @@ class LogicTest extends TestCase {
 		$entity = Company_Builder::entity(
 			array(
 				'type'     => 'HomeAndConstructionBusiness',
-				'name'     => 'Prime House Flooring',
-				'url'      => 'https://primehouseflooring.com/',
-				'street'   => '89 Pemberwick Rd 2nd Floor',
-				'locality' => 'Greenwich',
-				'region'   => 'CT',
-				'postal'   => '06831',
+				'name'     => 'Empresa exemplo',
+				'url'      => 'https://example.com/',
+				'street'   => '100 Main St',
+				'locality' => 'Austin',
+				'region'   => 'TX',
+				'postal'   => '78701',
 				'country'  => 'US',
 			),
-			'https://primehouseflooring.com/#business',
+			'https://example.com/#business',
 			true
 		);
 		$this->assertSame( 'PostalAddress', $entity['address']['@type'] );
-		$this->assertSame( 'Greenwich', $entity['address']['addressLocality'] );
+		$this->assertSame( 'Austin', $entity['address']['addressLocality'] );
 	}
 
 	public function test_company_without_address_omits_the_postal_node() {
 		$entity = Company_Builder::entity(
 			array(
 				'type' => 'HomeAndConstructionBusiness',
-				'name' => 'Prime House Flooring',
+				'name' => 'Empresa exemplo',
 			),
 			'https://example.com/#business',
 			false
@@ -367,9 +367,9 @@ class LogicTest extends TestCase {
 	}
 
 	public function test_link_policy_skips_the_current_post() {
-		$this->assertSame( '', Link_Policy::select( 10, 10, 'https://example.com/greenwich/', true ) );
-		$this->assertSame( 'https://example.com/greenwich/', Link_Policy::select( 10, 11, 'https://example.com/greenwich/', true ) );
-		$this->assertSame( '', Link_Policy::select( 0, 11, 'https://example.com/greenwich/', true ) );
+		$this->assertSame( '', Link_Policy::select( 10, 10, 'https://example.com/austin/', true ) );
+		$this->assertSame( 'https://example.com/austin/', Link_Policy::select( 10, 11, 'https://example.com/austin/', true ) );
+		$this->assertSame( '', Link_Policy::select( 0, 11, 'https://example.com/austin/', true ) );
 	}
 
 	public function test_only_one_id_rejects_duplicates() {
@@ -395,53 +395,30 @@ class LogicTest extends TestCase {
 		$this->assertSame( 'Second answer', $faq['mainEntity'][1]['acceptedAnswer']['text'] );
 	}
 
-	public function test_prime_house_example_imports() {
-		$raw = json_decode( (string) file_get_contents( dirname( __DIR__ ) . '/examples/prime-house-flooring.json' ), true );
+	public function test_example_project_imports_without_a_real_client() {
+		$raw = json_decode( (string) file_get_contents( dirname( __DIR__ ) . '/examples/projeto.json' ), true );
 		$this->assertIsArray( $raw );
 		$result = Sanitizer::clean( $raw, Defaults::all(), 'stored' );
 
 		$this->assertSame( array(), $result['errors'] );
 		$config = $result['config'];
-		$this->assertSame( 'phf', $config['prefix'] );
-		$this->assertGreaterThan( 80, count( $config['cities'] ) );
-		$this->assertSame( 'greenwich', $config['cities'][0]['slug'] );
-		$slugs = array_column( $config['cities'], 'slug' );
-		$this->assertContains( 'yonkers', $slugs );
-		$this->assertContains( 'jersey-city', $slugs );
-		$this->assertCount( 6, $config['services'] );
-		$this->assertSame( 'built to last decades.', $config['services'][0]['hero_suffix'] );
-		$this->assertSame( 1766, $config['services'][0]['problems_template_id'] );
-		$this->assertSame( 0, $config['services'][5]['gallery_template_id'] );
-		$this->assertSame( '2026/08/hero-hardwood-floor-repair.jpg', $config['services'][2]['hero_image'] );
-		$this->assertSame( 'Hardwood-Repair.jpg', basename( $config['services'][2]['cover_image'] ) );
-		$this->assertSame( 'phf_faq_question', $config['fields']['faq_question'] );
-		$this->assertSame( 'phf_faq_answer', $config['fields']['faq_answer'] );
-		$this->assertSame( 'ph-section-label', $config['design']['section_class'] );
-		$this->assertFalse( $config['skip_self_links'] );
-		$this->assertTrue( $config['company']['enabled'] );
-		$this->assertSame( '41.0198907', $config['company']['latitude'] );
-		$this->assertTrue( $config['modules']['kadence'] );
-		$this->assertTrue( $config['modules']['html_sitemap'] );
-		$this->assertContains( 633, $config['sitemap']['skip_ids'] );
+		$this->assertSame( 'lr', $config['prefix'] );
+		$this->assertSame( 'austin', $config['cities'][0]['slug'] );
+		$this->assertSame( 'manutencao', $config['services'][0]['slug'] );
+		$this->assertSame( 0, $config['services'][0]['gallery_template_id'] );
 
 		$codes = array_column( Reference::shortcodes( $config ), 'code' );
-		$this->assertContains( '[phf_city]', $codes );
-		$this->assertContains( '[phf_city_state]', $codes );
-		$this->assertContains( '[phf_schema_city]', $codes );
-		$this->assertContains( '[phf_schema_service]', $codes );
-		$this->assertContains( '[phf_problems_section]', $codes );
-		$this->assertContains( '[phf_html_sitemap]', $codes );
+		$this->assertContains( '[lr_city]', $codes );
+		$this->assertContains( '[lr_city_state]', $codes );
 
 		$tags = array_column( Reference::dynamic_tags( $config ), 'code' );
-		$this->assertContains( 'phf-location-url', $tags );
-		$this->assertContains( 'phf-service-hero-image', $tags );
-		$this->assertContains( 'phf-service-cover-image', $tags );
+		$this->assertContains( 'lr-location-url', $tags );
 	}
 
 	public function test_duplicate_city_and_reserved_slug_are_rejected() {
 		$result = Sanitizer::clean(
 			array(
-				'cities_csv' => "slug,name,state\ngreenwich,Greenwich,CT\ngreenwich,Greenwich Again,CT\nblog,Blog,CT\n",
+				'cities_csv' => "slug,name,state\naustin,Austin,TX\naustin,Austin Again,TX\nblog,Blog,TX\n",
 			),
 			Defaults::all(),
 			'form'
@@ -449,7 +426,7 @@ class LogicTest extends TestCase {
 
 		$this->assertNotEmpty( $result['errors'] );
 		$slugs = array_column( $result['config']['cities'], 'slug' );
-		$this->assertContains( 'greenwich', $slugs );
+		$this->assertContains( 'austin', $slugs );
 		$this->assertNotContains( 'blog', $slugs );
 		$this->assertCount( 1, $slugs );
 	}
@@ -459,8 +436,8 @@ class LogicTest extends TestCase {
 			array(
 				'services' => array(
 					array(
-						'slug'         => 'tile-installation',
-						'display_name' => 'Tile Installation',
+						'slug'         => 'manutencao',
+						'display_name' => 'Manutenção',
 						'hero_image'   => 'https://staging.example.com/wp-content/uploads/2026/08/hero.jpg',
 						'cover_image'  => '../secret.jpg',
 					),
@@ -478,23 +455,23 @@ class LogicTest extends TestCase {
 		$result = Wizard::build(
 			Defaults::all(),
 			array(
-				'client_name'  => 'Prime House Flooring',
-				'trade_label'  => 'Flooring Contractor',
-				'prefix'       => 'phf',
+				'client_name'  => 'Cliente exemplo',
+				'trade_label'  => 'Serviço local',
+				'prefix'       => 'lr',
 				'model'        => 'static_service',
 				'parent_slug'  => 'pisos',
 				'parent_label' => 'Pisos',
-				'places'       => "Greenwich, CT\nStamford, CT",
-				'offers'       => "Tile Installation\nHardwood Flooring",
+				'places'       => "Austin, TX\nDallas, TX",
+				'offers'       => "Manutenção\nInstalação",
 			)
 		);
 
 		$this->assertSame( array(), $result['errors'] );
-		$this->assertSame( 'phf', $result['config']['prefix'] );
-		$this->assertSame( 'phf_city_slug', $result['config']['fields']['city_slug'] );
-		$this->assertSame( 'Prime House Flooring', $result['config']['company']['name'] );
-		$this->assertSame( array( 'greenwich', 'stamford' ), array_column( $result['config']['cities'], 'slug' ) );
-		$this->assertSame( 'tile-installation', $result['config']['services'][0]['slug'] );
+		$this->assertSame( 'lr', $result['config']['prefix'] );
+		$this->assertSame( 'lr_city_slug', $result['config']['fields']['city_slug'] );
+		$this->assertSame( 'Cliente exemplo', $result['config']['company']['name'] );
+		$this->assertSame( array( 'austin', 'dallas' ), array_column( $result['config']['cities'], 'slug' ) );
+		$this->assertSame( 'manutencao', $result['config']['services'][0]['slug'] );
 		$this->assertSame( array( 'pisos' ), $result['config']['levels'][0]['prefix'] );
 		$this->assertSame( '/pisos/', $result['config']['levels'][0]['trail'][1]['path'] );
 		$this->assertTrue( Wizard::is_ready( $result['config'] ) );
