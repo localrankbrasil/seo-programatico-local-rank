@@ -75,12 +75,6 @@ final class Diagnostics {
 			? self::ok( 'SEO', 'Yoast ativo', 'O canonical programático entra pelo filtro do Yoast. Confira o @id da Organization no grafo.' )
 			: self::warn( 'SEO', 'Yoast não encontrado', 'O canonical do núcleo do WordPress ainda é filtrado. O provider @id usa /#organization.' );
 
-		if ( function_exists( 'phf_seo_local_path' ) || function_exists( 'phf_seo_register_rewrites' ) ) {
-			$checks[] = self::fail( 'Operação', 'Snippets antigos ativos', 'Desative o pacote WPCode da etapa 03 antes de publicar com este plugin.' );
-		} else {
-			$checks[] = self::ok( 'Operação', 'Sem snippets legados detectados', 'Nenhuma função phf_seo_local_path está carregada.' );
-		}
-
 		$published = 0;
 		if ( post_type_exists( $config['cpt'] ) ) {
 			$counts = wp_count_posts( $config['cpt'] );
